@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Scrollable 3D Animation with Three.js
 
 - Watch the [full tutorial](https://youtu.be/Q7AOvWpIVHU) on YouTube
@@ -10,3 +11,6 @@ git clone <this-repo>
 npm install
 npm run dev
 ```
+=======
+# the_game
+>>>>>>> 3ac1eb15a482d8bf1816e25540ebcd5d092820ec
