@@ -37,113 +37,43 @@ scene.add(pointLight, ambientLight);
 
 // const controls = new OrbitControls(camera, renderer.domElement);
 
-function addStar() {
-  const geometry = new THREE.SphereGeometry(0.25, 24, 24);
-  const material = new THREE.MeshStandardMaterial({ color: 0xffffff });
-  const star = new THREE.Mesh(geometry, material);
-
-  const [x, y, z] = Array(3)
-    .fill()
-    .map(() => THREE.MathUtils.randFloatSpread(100));
-
-  star.position.set(x, y, z);
-  scene.add(star);
-}
-
-Array(200).fill().forEach(addStar);
-
 // Background
 
 const spaceTexture = new THREE.TextureLoader().load('space.jpg');
 scene.background = spaceTexture;
 
-
-// Moon
-
 const moonTexture = new THREE.TextureLoader().load('moon.jpg');
-const normalTexture = new THREE.TextureLoader().load('normal.jpg');
-
-
-
-const m = new THREE.Matrix4();
-
-m.set(11, 12, 13, 14,
-  21, 22, 23, 24,
-  31, 32, 33, 34,
-  41, 42, 43, 44);
-
-const loader = new GLTFLoader();
-let heart = {};
-
-const prideTexture = new THREE.TextureLoader().load('pride.png');
-prideTexture.encoding = THREE.sRGBEncoding;
-
-prideTexture.flipY = false;
+const normalTexture = new THREE.TextureLoader().load('normal_x.png');
 
 const moon = new THREE.Mesh(
-  new THREE.SphereGeometry(3, 32, 32),
+  new THREE.SphereGeometry(2, 96, 96),
   new THREE.MeshStandardMaterial({
-    map: prideTexture,
+    map: moonTexture,
     normalMap: normalTexture,
   })
 );
 
 scene.add(moon);
 
-const material = new THREE.MeshStandardMaterial({
-  map: prideTexture,
-  normalMap: normalTexture,
-});
-
-loader.load('./heart.glb', function (gltf) {
-  gltf.scene.scale.set(0.1, 0.1, 0.1)
-  heart = gltf.scene;
-  window.heart = heart;
-
-  let mesh = gltf.scene.children[0];
-  mesh.material = material;
-  mesh.scale.set(0.1, 0.1, 0.1)
-  mesh.position.set(-2.3, -2.50,  0)
-  mesh.traverse( function ( node ) {
-    if ( node.isMesh ) 
-      node.material = material;
-
-  } );
-  scene.add(mesh);
-
-}, undefined, function (error) {
-  console.error(error);
-});
-
-
-moon.position.z = 30;
-moon.position.setX(-10);
+moon.position.z = -2;
+moon.position.setX(-5);
+moon.rotation.y += 0.2;
 
 // Scroll Animation
 
 function moveCamera() {
   const t = document.body.getBoundingClientRect().top;
-  moon.rotation.x += 0.05;
-  moon.rotation.y += 0.075;
-  moon.rotation.z += 0.05;
-  // heart.position.z -= 0.05;
+  moon.rotation.x -= 0.04  ;
+  moon.rotation.y -= 0.025;
 
-  camera.position.z = t * -0.01;
-  camera.position.x = t * -0.0002;
-  camera.rotation.y = t * -0.0002;
+  camera.position.z = t * -0.002;
 }
 
 document.body.onscroll = moveCamera;
 moveCamera();
 
-// Animation Loop
-
 function animate() {
   requestAnimationFrame(animate);
-  moon.rotation.x += 0.005;
-
-  // controls.update();
-
   renderer.render(scene, camera);
 }
 
